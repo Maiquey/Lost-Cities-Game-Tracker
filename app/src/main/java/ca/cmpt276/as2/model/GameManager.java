@@ -9,8 +9,40 @@ public class GameManager {
 
     private ArrayList<Game> games;
 
-    public GameManager() {
+    //Singleton support
+    private static GameManager instance;
+    private GameManager() {
         this.games = new ArrayList<>();
+    }
+    public static GameManager getInstance(){
+        if (instance == null){
+            instance = new GameManager();
+        }
+        return instance;
+    }
+
+    public String[] getStringArr(){
+        String[] arr = new String[getSize()];
+        for (int i = 0; i < getSize(); i++){
+
+            String winner;
+            if (games.get(i).getWinner() == 0){
+                winner = "Tie Game: ";
+            }
+            else{
+                winner = "Player " + games.get(i).getWinner() + " won: ";
+            }
+
+            String str = games.get(i).getCreation_time()
+                            + " - "
+                            + winner
+                            + games.get(i).getPlayer(0).getScore()
+                            + " vs "
+                            + games.get(i).getPlayer(1).getScore();
+
+            arr[i] = str;
+        }
+        return arr;
     }
 
     public void addGame(Game game){

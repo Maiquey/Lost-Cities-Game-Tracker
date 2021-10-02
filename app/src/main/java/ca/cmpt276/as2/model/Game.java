@@ -9,35 +9,36 @@ import java.util.ArrayList;
 
 public class Game {
 
+    private static final int MAX_NUM_OF_PLAYERS = 2;
     private LocalDateTime creation_time;
-    private ArrayList<Integer> players;
-    private ArrayList<Integer> winners;
+    private ArrayList<PlayerScore> players;
+    private int winner;
 
     public Game() {
         this.creation_time = LocalDateTime.now();
         this.players = new ArrayList<>();
-        this.winners = new ArrayList<>();
+        this.winner = 0;
     }
 
-    public void addScore(int score){
-        players.add(score);
+    public void addScore(PlayerScore data){
+        players.add(data);
+        if (players.size() == MAX_NUM_OF_PLAYERS){
+            findWinners();
+        }
     }
 
     public void findWinners() {
 
-        int size = players.size();
-        int highestScore = players.get(0);
-
-        for (int i = 1; i < size; i++){
-            if (players.get(i) > highestScore) {
-                highestScore = players.get(i);
-            }
+        if ( players.get(0).getScore() == players.get(1).getScore()){
+            return;
         }
-
-        for (int i = 0; i < size; i++){
-            if (players.get(i) == highestScore){
-                winners.add(i + 1);
-            }
+        if ( players.get(0).getScore() > players.get(1).getScore()){
+            winner = 1;
+            return;
+        }
+        else{
+            winner = 2;
+            return;
         }
     }
 
@@ -46,11 +47,15 @@ public class Game {
         return creation_time;
     }
 
-    public ArrayList<Integer> getPlayers() {
+    public PlayerScore getPlayer(int index){
+        return players.get(index);
+    }
+
+    public ArrayList<PlayerScore> getPlayers() {
         return players;
     }
 
-    public ArrayList<Integer> getWinners() {
-        return winners;
+    public int getWinner() {
+        return winner;
     }
 }

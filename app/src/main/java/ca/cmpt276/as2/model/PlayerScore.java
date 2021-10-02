@@ -55,4 +55,16 @@ public class PlayerScore {
     public int getNum_of_wager_cards() {
         return num_of_wager_cards;
     }
+
+    public void setNum_of_cards(int num_of_cards) {
+        this.num_of_cards = num_of_cards;
+    }
+
+    public void setSum_of_points(int sum_of_points) {
+        this.sum_of_points = sum_of_points;
+    }
+
+    public void setNum_of_wager_cards(int num_of_wager_cards) {
+        this.num_of_wager_cards = num_of_wager_cards;
+    }
 }
