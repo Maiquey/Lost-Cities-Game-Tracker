@@ -1,6 +1,7 @@
 package ca.cmpt276.as2.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -32,20 +33,25 @@ public class Game {
         if ( players.get(0).getScore() == players.get(1).getScore()){
             return;
         }
-        if ( players.get(0).getScore() > players.get(1).getScore()){
+        else if ( players.get(0).getScore() > players.get(1).getScore()){
             winner = 1;
-            return;
         }
         else{
             winner = 2;
-            return;
         }
     }
 
 
-    public LocalDateTime getCreation_time() {
-        return creation_time;
+    public String getCreation_time() {
+        LocalDateTime time = creation_time;
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("MMM d");
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("h:mma");
+        String formatted = time.format(formatter1) + " @ " + time.format(formatter2);
+
+        return formatted;
     }
+
+//"MMM dd @ hh:mm aa"
 
     public PlayerScore getPlayer(int index){
         return players.get(index);
