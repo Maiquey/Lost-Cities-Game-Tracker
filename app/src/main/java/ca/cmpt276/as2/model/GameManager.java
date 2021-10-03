@@ -21,6 +21,7 @@ public class GameManager {
         return instance;
     }
 
+    //returns string array readable by ListView
     public String[] getStringArr(){
         String[] arr = new String[getSize()];
         for (int i = 0; i < getSize(); i++){

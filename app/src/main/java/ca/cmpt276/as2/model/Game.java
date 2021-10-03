@@ -10,21 +10,23 @@ import java.util.ArrayList;
 
 public class Game {
 
-    private static final int MAX_NUM_OF_PLAYERS = 2;
     private LocalDateTime creation_time;
     private ArrayList<PlayerScore> players;
     private int winner;
 
+    //constructor
     public Game() {
         this.creation_time = LocalDateTime.now();
         this.players = new ArrayList<>();
         this.winner = 0;
     }
 
+    //add a score to the list
     public void addScore(PlayerScore data){
         players.add(data);
     }
 
+    //player 1 or 2 wins, 0 for tie
     public void findWinners() {
 
         if ( players.get(0).getScore() == players.get(1).getScore()){
@@ -38,11 +40,13 @@ public class Game {
         }
     }
 
+    //copies data from parameter game to object, preserves original time
     public void copyGame(Game game){
         players = new ArrayList<>(game.getPlayers());
         winner = game.getWinner();
     }
 
+    //returns string used by game list
     public String getCreation_timeStr() {
         LocalDateTime time = creation_time;
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("MMM d");
@@ -51,8 +55,6 @@ public class Game {
 
         return formatted;
     }
-
-//"MMM dd @ hh:mm aa"
 
     public PlayerScore getPlayer(int index){
         return players.get(index);

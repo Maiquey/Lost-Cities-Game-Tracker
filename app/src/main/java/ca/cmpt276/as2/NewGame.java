@@ -16,8 +16,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.navigation.ui.AppBarConfiguration;
-
 import ca.cmpt276.as2.databinding.ActivityNewGameBinding;
 import ca.cmpt276.as2.model.Game;
 import ca.cmpt276.as2.model.GameManager;
@@ -25,7 +23,6 @@ import ca.cmpt276.as2.model.PlayerScore;
 
 public class NewGame extends AppCompatActivity {
 
-    private AppBarConfiguration appBarConfiguration;
     private ActivityNewGameBinding binding;
     private Game game;
     private Game originalGame;
@@ -43,7 +40,6 @@ public class NewGame extends AppCompatActivity {
     private GameManager gameManager;
 
     private int ActivityState;
-    private int GameIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +52,7 @@ public class NewGame extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
+        //initialize working variables
         Winner = (TextView) findViewById(R.id.winner);
         Player1Score = (TextView) findViewById(R.id.Player1Score);
         Player2Score = (TextView) findViewById(R.id.Player2Score);
@@ -66,8 +63,7 @@ public class NewGame extends AppCompatActivity {
         Player2Points = (EditText) findViewById(R.id.Player2Points);
         Player2Wagers = (EditText) findViewById(R.id.Player2Wagers);
 
-
-
+        //singleton instance
         gameManager = GameManager.getInstance();
 
         Intent intent = getIntent();
@@ -78,13 +74,11 @@ public class NewGame extends AppCompatActivity {
         switch(ActivityState){
             case 1:
                 setTitle(getString(R.string.new_title));
-                //code for making new game
                 newGame();
                 break;
 
             case 2:
                 setTitle(getString(R.string.edit_title));
-                //code for editting existing game
                 int gameIndex = intent.getIntExtra("index", 0);
                 Toast.makeText(this,"" + gameIndex, Toast.LENGTH_SHORT).show();
                 editGame(gameIndex);
@@ -114,6 +108,7 @@ public class NewGame extends AppCompatActivity {
         watchText2(Player2Wagers);
     }
 
+    //make changes based on changes to fields related to player 1
     private void watchText1(EditText TextBox) {
         TextBox.addTextChangedListener(new TextWatcher() {
 
@@ -125,8 +120,6 @@ public class NewGame extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 updateScore(Player1Score, Player1, Player1Cards, Player1Points, Player1Wagers);
-//                updateScore(Player2Score, Player2, Player2Cards, Player2Points, Player2Wagers);
-                //Toast.makeText(NewGame.this, "update!", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -136,6 +129,7 @@ public class NewGame extends AppCompatActivity {
         });
     }
 
+    //make changes based on changes to fields related to player 2
     private void watchText2(EditText TextBox) {
         TextBox.addTextChangedListener(new TextWatcher() {
 
@@ -146,9 +140,7 @@ public class NewGame extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                updateScore(Player1Score, Player1, Player1Cards, Player1Points, Player1Wagers);
                 updateScore(Player2Score, Player2, Player2Cards, Player2Points, Player2Wagers);
-                //Toast.makeText(NewGame.this, "update!", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -158,10 +150,14 @@ public class NewGame extends AppCompatActivity {
         });
     }
 
+    //method to change display of scores in real-time with manipulation of text fields
     private void updateScore(TextView PlayerScore, PlayerScore player, EditText CardText, EditText PointsText, EditText WagersText) {
+
         String CardsStr = CardText.getText().toString();
         String PointsStr = PointsText.getText().toString();
         String WagersStr = WagersText.getText().toString();
+
+        //change score value if all 3 fields are filled
         if (!CardsStr.equals("")
                 &&  !PointsStr.equals("")
                 &&  !WagersStr.equals("")){
@@ -171,37 +167,36 @@ public class NewGame extends AppCompatActivity {
             player.setNum_of_wager_cards(Integer.parseInt(WagersStr));
 
             PlayerScore.setText("" + player.getScore());
-            //Toast.makeText(NewGame.this, "SCORE!", Toast.LENGTH_SHORT).show();
             changeWinnerMessage();
         }else{
             PlayerScore.setText("-");
             Winner.setText("");
-            //Toast.makeText(NewGame.this, "NOPE!", Toast.LENGTH_SHORT).show();
         }
     }
 
+    //sets the winner text if both player scores are non-empty
     private void changeWinnerMessage() {
         if (!Player1Score.getText().toString().equals("-") && !Player2Score.getText().toString().equals("-")){
             if (Integer.parseInt(Player1Score.getText().toString()) == Integer.parseInt(Player2Score.getText().toString())){
-                Winner.setText("Tie");
+                Winner.setText(R.string.tie_game);
             }
             else if (Integer.parseInt(Player1Score.getText().toString()) > Integer.parseInt(Player2Score.getText().toString())){
-                Winner.setText("Winner is Player 1");
+                Winner.setText(R.string.winner_1);
             }
             else{
-                Winner.setText("Winner is Player 2");
+                Winner.setText(R.string.winner_2);
             }
         }
     }
 
+    //similar to newGame, saves instance of original game to overwrite when saving
+    //if editing is aborted, no changes are made to orignal game
     private void editGame(int gameIndex) {
 
         originalGame = gameManager.retrieveGame(gameIndex);
         game = new Game();
         Player1 = new PlayerScore(0,0,0);
         Player2 = new PlayerScore(0,0,0);
-
-
 
         populateView();
 
@@ -213,6 +208,7 @@ public class NewGame extends AppCompatActivity {
         watchText2(Player2Wagers);
     }
 
+    //populates view of activity with data of game to edit
     private void populateView() {
         TextView dateTime = (TextView) findViewById(R.id.DateTime);
         dateTime.setText("" + originalGame.getCreation_timeStr());
@@ -233,44 +229,19 @@ public class NewGame extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //inflate menu:
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         getMenuInflater().inflate(R.menu.menu_new_game, menu);
         return true;
     }
 
+    //switch case for up button and save button
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_save:
-
-                boolean missingScore = (Player1Score.getText().toString().equals("-") || Player2Score.getText().toString().equals("-"));
-
-                if(missingScore){
-                    Toast.makeText(this, "Input fields incomplete", Toast.LENGTH_LONG).show();
-                }
-                else if(player1ZeroError() || player2ZeroError()){
-                    Toast.makeText(this, "Point and Wager fields must be 0 if number of cards is 0", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    finalScoreCheck();
-                    game.addScore(Player1);
-                    game.addScore(Player2);
-                    game.findWinners();
-                    Toast.makeText(this, "Saving!", Toast.LENGTH_SHORT).show();
-                    if (ActivityState == 1){
-                        gameManager.addGame(game);
-                    }
-                    else{
-                        originalGame.copyGame(game);
-                    }
-                    finish();
-
-                }
+                saveGame();
                 break;
 
             case android.R.id.home:
-                //Toast.makeText(this, "Going Up!", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
 
@@ -279,6 +250,33 @@ public class NewGame extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    //saving a game (new and edited)
+    private void saveGame() {
+        boolean missingScore = (Player1Score.getText().toString().equals("-") || Player2Score.getText().toString().equals("-"));
+
+        if(missingScore){
+            Toast.makeText(this, "Input fields incomplete", Toast.LENGTH_LONG).show();
+        }
+        else if(player1ZeroError() || player2ZeroError()){
+            Toast.makeText(this, "Point and Wager fields must be 0 if number of cards is 0", Toast.LENGTH_LONG).show();
+        }
+        else{
+            finalScoreCheck();
+            game.addScore(Player1);
+            game.addScore(Player2);
+            game.findWinners();
+            Toast.makeText(this, "Saving!", Toast.LENGTH_SHORT).show();
+            if (ActivityState == 1){
+                gameManager.addGame(game);
+            }
+            else{
+                originalGame.copyGame(game);
+            }
+            finish();
+
+        }
     }
 
     //only checked if missingScore is false
@@ -294,6 +292,7 @@ public class NewGame extends AppCompatActivity {
                 || Integer.parseInt(Player2Wagers.getText().toString()) != 0);
     }
 
+    //method to update any missed scores during editing
     private void finalScoreCheck(){
         updateScore(Player1Score, Player1, Player1Cards, Player1Points, Player1Wagers);
         updateScore(Player2Score, Player2, Player2Cards, Player2Points, Player2Wagers);
