@@ -4,7 +4,6 @@
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item
         android:id="@+id/action_save"
-        android:icon="@drawable/ic_baseline_directions_run_24"
         android:title="Save"
         app:showAsAction="always"/>
 

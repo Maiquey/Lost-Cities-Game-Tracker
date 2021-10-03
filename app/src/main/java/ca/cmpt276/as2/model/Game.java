@@ -38,8 +38,12 @@ public class Game {
         }
     }
 
+    public void copyGame(Game game){
+        players = new ArrayList<>(game.getPlayers());
+        winner = game.getWinner();
+    }
 
-    public String getCreation_time() {
+    public String getCreation_timeStr() {
         LocalDateTime time = creation_time;
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("MMM d");
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("h:mma");

@@ -33,7 +33,7 @@ public class GameManager {
                 winner = "Player " + games.get(i).getWinner() + " won: ";
             }
 
-            String str = games.get(i).getCreation_time()
+            String str = games.get(i).getCreation_timeStr()
                             + " - "
                             + winner
                             + games.get(i).getPlayer(0).getScore()

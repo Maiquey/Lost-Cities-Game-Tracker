@@ -28,6 +28,7 @@ public class NewGame extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityNewGameBinding binding;
     private Game game;
+    private Game originalGame;
     private PlayerScore Player1;
     private PlayerScore Player2;
     private TextView Player1Score;
@@ -42,6 +43,7 @@ public class NewGame extends AppCompatActivity {
     private GameManager gameManager;
 
     private int ActivityState;
+    private int GameIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +101,10 @@ public class NewGame extends AppCompatActivity {
         Player2 = new PlayerScore(0,0,0);
 
         TextView dateTime = (TextView) findViewById(R.id.DateTime);
-        dateTime.setText("" + game.getCreation_time());
+        dateTime.setText("" + game.getCreation_timeStr());
+
+        Player1Score.setText("-");
+        Player2Score.setText("-");
 
         watchText1(Player1Cards);
         watchText1(Player1Points);
@@ -176,7 +181,7 @@ public class NewGame extends AppCompatActivity {
     }
 
     private void changeWinnerMessage() {
-        if (!Player1Score.getText().toString().equals(" - ") && !Player2Score.getText().toString().equals(" - ")){
+        if (!Player1Score.getText().toString().equals("-") && !Player2Score.getText().toString().equals("-")){
             if (Integer.parseInt(Player1Score.getText().toString()) == Integer.parseInt(Player2Score.getText().toString())){
                 Winner.setText("Tie");
             }
@@ -191,12 +196,12 @@ public class NewGame extends AppCompatActivity {
 
     private void editGame(int gameIndex) {
 
-        game = gameManager.retrieveGame(gameIndex);
-        Player1 = game.getPlayer(0);
-        Player2 = game.getPlayer(1);
+        originalGame = gameManager.retrieveGame(gameIndex);
+        game = new Game();
+        Player1 = new PlayerScore(0,0,0);
+        Player2 = new PlayerScore(0,0,0);
 
-        TextView dateTime = (TextView) findViewById(R.id.DateTime);
-        dateTime.setText("" + game.getCreation_time());
+
 
         populateView();
 
@@ -209,14 +214,16 @@ public class NewGame extends AppCompatActivity {
     }
 
     private void populateView() {
-        Player1Cards.setText("" + Player1.getNum_of_cards());
-        Player1Points.setText("" + Player1.getSum_of_points());
-        Player1Wagers.setText("" + Player1.getNum_of_wager_cards());
-        Player1Score.setText("" + Player1.getScore());
-        Player2Cards.setText("" + Player2.getNum_of_cards());
-        Player2Points.setText("" + Player2.getSum_of_points());
-        Player2Wagers.setText("" + Player2.getNum_of_wager_cards());
-        Player2Score.setText("" + Player2.getScore());
+        TextView dateTime = (TextView) findViewById(R.id.DateTime);
+        dateTime.setText("" + originalGame.getCreation_timeStr());
+        Player1Cards.setText("" + originalGame.getPlayer(0).getNum_of_cards());
+        Player1Points.setText("" + originalGame.getPlayer(0).getSum_of_points());
+        Player1Wagers.setText("" + originalGame.getPlayer(0).getNum_of_wager_cards());
+        Player1Score.setText("" + originalGame.getPlayer(0).getScore());
+        Player2Cards.setText("" + originalGame.getPlayer(1).getNum_of_cards());
+        Player2Points.setText("" + originalGame.getPlayer(1).getSum_of_points());
+        Player2Wagers.setText("" + originalGame.getPlayer(1).getNum_of_wager_cards());
+        Player2Score.setText("" + originalGame.getPlayer(1).getScore());
         changeWinnerMessage();
     }
 
@@ -238,30 +245,24 @@ public class NewGame extends AppCompatActivity {
             case R.id.action_save:
 
                 boolean missingScore = (Player1Score.getText().toString().equals("-") || Player2Score.getText().toString().equals("-"));
-                boolean player1ZeroError = ((Integer.parseInt(Player1Cards.getText().toString()) == 0)
-                                            && (Integer.parseInt(Player1Points.getText().toString()) != 0
-                                            || Integer.parseInt(Player1Wagers.getText().toString()) != 0));
-                boolean player2ZeroError = ((Integer.parseInt(Player2Cards.getText().toString()) == 0)
-                        && (Integer.parseInt(Player2Points.getText().toString()) != 0
-                        || Integer.parseInt(Player2Wagers.getText().toString()) != 0));
 
                 if(missingScore){
                     Toast.makeText(this, "Input fields incomplete", Toast.LENGTH_LONG).show();
                 }
-                else if(player1ZeroError || player2ZeroError){
+                else if(player1ZeroError() || player2ZeroError()){
                     Toast.makeText(this, "Point and Wager fields must be 0 if number of cards is 0", Toast.LENGTH_LONG).show();
                 }
                 else{
+                    finalScoreCheck();
+                    game.addScore(Player1);
+                    game.addScore(Player2);
+                    game.findWinners();
+                    Toast.makeText(this, "Saving!", Toast.LENGTH_SHORT).show();
                     if (ActivityState == 1){
-                        Toast.makeText(this, "Now saving!", Toast.LENGTH_SHORT).show();
-                        game.addScore(Player1);
-                        game.addScore(Player2);
-                        game.findWinners();
                         gameManager.addGame(game);
                     }
                     else{
-                        Toast.makeText(this, "Now Re-saving!", Toast.LENGTH_SHORT).show();
-                        game.findWinners();
+                        originalGame.copyGame(game);
                     }
                     finish();
 
@@ -278,5 +279,23 @@ public class NewGame extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    //only checked if missingScore is false
+    private boolean player1ZeroError() {
+        return (Integer.parseInt(Player1Cards.getText().toString()) == 0)
+                && (Integer.parseInt(Player1Points.getText().toString()) != 0
+                || Integer.parseInt(Player1Wagers.getText().toString()) != 0);
+    }
+
+    private boolean player2ZeroError() {
+        return (Integer.parseInt(Player2Cards.getText().toString()) == 0)
+                && (Integer.parseInt(Player2Points.getText().toString()) != 0
+                || Integer.parseInt(Player2Wagers.getText().toString()) != 0);
+    }
+
+    private void finalScoreCheck(){
+        updateScore(Player1Score, Player1, Player1Cards, Player1Points, Player1Wagers);
+        updateScore(Player2Score, Player2, Player2Cards, Player2Points, Player2Wagers);
     }
 }
