@@ -23,9 +23,6 @@ public class Game {
 
     public void addScore(PlayerScore data){
         players.add(data);
-        if (players.size() == MAX_NUM_OF_PLAYERS){
-            findWinners();
-        }
     }
 
     public void findWinners() {

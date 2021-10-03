@@ -38,6 +38,8 @@ public class NewGame extends AppCompatActivity {
     private EditText Player2Cards;
     private EditText Player2Points;
     private EditText Player2Wagers;
+    private TextView Winner;
+    private GameManager gameManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class NewGame extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
+        Winner = (TextView) findViewById(R.id.winner);
         Player1Score = (TextView) findViewById(R.id.Player1Score);
         Player2Score = (TextView) findViewById(R.id.Player2Score);
         Player1Cards = (EditText) findViewById(R.id.Player1Cards);
@@ -62,7 +65,7 @@ public class NewGame extends AppCompatActivity {
         Player1 = new PlayerScore(0,0,0);
         Player2 = new PlayerScore(0,0,0);
 
-        GameManager gameManager = GameManager.getInstance();
+        gameManager = GameManager.getInstance();
 
         Intent intent = getIntent();
         int ActivityState = intent.getIntExtra("state", 1);
@@ -152,16 +155,31 @@ public class NewGame extends AppCompatActivity {
                 &&  !PointsStr.equals("")
                 &&  !WagersStr.equals("")){
 
-                    player.setNum_of_cards(Integer.parseInt(CardsStr));
-                    player.setSum_of_points(Integer.parseInt(PointsStr));
-                    player.setNum_of_wager_cards(Integer.parseInt(WagersStr));
+            player.setNum_of_cards(Integer.parseInt(CardsStr));
+            player.setSum_of_points(Integer.parseInt(PointsStr));
+            player.setNum_of_wager_cards(Integer.parseInt(WagersStr));
 
-                    PlayerScore.setText("" + player.getScore());
+            PlayerScore.setText("" + player.getScore());
             Toast.makeText(NewGame.this, "SCORE!", Toast.LENGTH_SHORT).show();
-
+            changeWinnerMessage();
         }else{
             PlayerScore.setText("-");
+            Winner.setText("");
             Toast.makeText(NewGame.this, "NOPE!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void changeWinnerMessage() {
+        if (!Player1Score.getText().toString().equals(" - ") && !Player2Score.getText().toString().equals(" - ")){
+            if (Integer.parseInt(Player1Score.getText().toString()) == Integer.parseInt(Player2Score.getText().toString())){
+                Winner.setText("Tie");
+            }
+            else if (Integer.parseInt(Player1Score.getText().toString()) > Integer.parseInt(Player2Score.getText().toString())){
+                Winner.setText("Winner is Player 1");
+            }
+            else{
+                Winner.setText("Winner is Player 2");
+            }
         }
     }
 
@@ -186,8 +204,29 @@ public class NewGame extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_save:
-                Toast.makeText(this, "Now saving!", Toast.LENGTH_SHORT).show();
-                finish();
+
+                boolean missingScore = (Player1Score.getText().toString().equals("-") || Player2Score.getText().toString().equals("-"));
+                boolean player1ZeroError = ((Integer.parseInt(Player1Cards.getText().toString()) == 0)
+                                            && (Integer.parseInt(Player1Points.getText().toString()) != 0
+                                            || Integer.parseInt(Player1Wagers.getText().toString()) != 0));
+                boolean player2ZeroError = ((Integer.parseInt(Player2Cards.getText().toString()) == 0)
+                        && (Integer.parseInt(Player2Points.getText().toString()) != 0
+                        || Integer.parseInt(Player2Wagers.getText().toString()) != 0));
+
+                if(missingScore){
+                    Toast.makeText(this, "Input fields incomplete", Toast.LENGTH_LONG).show();
+                }
+                else if(player1ZeroError || player2ZeroError){
+                    Toast.makeText(this, "Point and Wager fields must be 0 if number of cards is 0", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(this, "Now saving!", Toast.LENGTH_SHORT).show();
+                    game.addScore(Player1);
+                    game.addScore(Player2);
+                    game.findWinners();
+                    gameManager.addGame(game);
+                    finish();
+                }
                 break;
 
             case android.R.id.home:

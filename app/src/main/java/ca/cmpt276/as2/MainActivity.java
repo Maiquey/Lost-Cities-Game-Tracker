@@ -15,6 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import ca.cmpt276.as2.databinding.ActivityMainBinding;
+import ca.cmpt276.as2.model.GameManager;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private GameManager gameManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +42,21 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
 
+        gameManager = GameManager.getInstance();
+
         setUpFAB();
-        populateListView();
+        UpdateUI();
         registerClickCallback();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UpdateUI();
+    }
+
+    private void UpdateUI() {
+        populateListView();
     }
 
     private void setUpFAB() {
@@ -62,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void populateListView() {
         //create list of items
-        String[] myItems = {"Blue", "Green", "Purple", "Red"};
+        String[] myItems = gameManager.getStringArr();
+                //{"Blue", "Green", "Purple", "Red"};
 
         //build adapter
         ArrayAdapter<String> adapter= new ArrayAdapter<String>(
