@@ -6,11 +6,12 @@
         android:id="@+id/action_save"
         android:icon="@drawable/ic_baseline_directions_run_24"
         android:title="Save"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_do_something"
-        android:title="Do Something"
-        app:showAsAction="never"/>
+<!--    <item android:id="@+id/action_do_something"-->
+<!--        android:icon="@drawable/ic_baseline_directions_run_24"-->
+<!--        android:title="Do Something"-->
+<!--        app:showAsAction="collapseActionView"/>-->
 
 </menu>

@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
                 Intent intent = NewGame.makeIntent(MainActivity.this);
+                intent.putExtra("state", 1);
                 startActivity(intent);
 
                 //finish();
@@ -80,8 +81,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 TextView textView = (TextView) viewClicked;
-                String message = "You clicked # " + position + ", which is string: " + textView.getText().toString();
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                //String message = "You clicked # " + position + ", which is string: " + textView.getText().toString();
+                //Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                Intent intent = NewGame.makeIntent(MainActivity.this);
+                intent.putExtra("state", 2);
+                intent.putExtra("index", position);
+                startActivity(intent);
             }
         });
     }

@@ -1,4 +1,5 @@
 <resources>
+    <string name="date_time">DateTime</string>
     <string name="main_title">Games Played</string>
     <string name="new_title">New Game Score</string>
     <string name="edit_title">Edit Game Score</string>
@@ -14,4 +15,10 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_new_game">NewGame</string>
     <string name="title_activity_edit_game">EditGame</string>
+    <string name="player_1">Player 1</string>
+    <string name="player_2">Player 2</string>
+    <string name="number_of_cards">Number of Cards</string>
+    <string name="sum_of_points">Sum of Points</string>
+    <string name="number_of_wagers">Number of Wagers</string>
+    <string name="scores">Scores</string>
 </resources>

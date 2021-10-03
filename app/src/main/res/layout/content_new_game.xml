@@ -18,89 +18,95 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/DateTime"
         android:layout_width="135dp"
         android:layout_height="19dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="right"
-        android:text="TextView"
+        android:text="@string/date_time"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/nav_host_fragment_content_new_game" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/Player2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:gravity="center"
+        android:text="@string/player_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/space2"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/DateTime" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/Player1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:gravity="center"
+        android:text="@string/player_1"
         app:layout_constraintEnd_toStartOf="@+id/space2"
         app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/DateTime" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/PlayerCards"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber8"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumber8"
-        app:layout_constraintTop_toTopOf="@+id/editTextNumber8" />
+        android:gravity="right"
+        android:text="@string/number_of_cards"
+        app:layout_constraintBottom_toBottomOf="@+id/Player1Cards"
+        app:layout_constraintEnd_toStartOf="@+id/Player1Cards"
+        app:layout_constraintTop_toTopOf="@+id/Player1Cards" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/PlayerPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber16"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumber16"
-        app:layout_constraintTop_toTopOf="@+id/editTextNumber16" />
+        android:gravity="right"
+        android:text="@string/sum_of_points"
+        app:layout_constraintBottom_toBottomOf="@+id/Player1Points"
+        app:layout_constraintEnd_toStartOf="@+id/Player1Points"
+        app:layout_constraintTop_toTopOf="@+id/Player1Points" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/PlayerWagers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber18"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumber18"
-        app:layout_constraintTop_toTopOf="@+id/editTextNumber18" />
+        android:gravity="right"
+        android:text="@string/number_of_wagers"
+        app:layout_constraintBottom_toBottomOf="@+id/Player1Wagers"
+        app:layout_constraintEnd_toStartOf="@+id/Player1Wagers"
+        app:layout_constraintTop_toTopOf="@+id/Player1Wagers" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/PlayerScores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/textView8"
-        app:layout_constraintEnd_toEndOf="@+id/textView6"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/textView8" />
+        android:gravity="right"
+        android:text="@string/scores"
+        app:layout_constraintBottom_toBottomOf="@+id/Player1Score"
+        app:layout_constraintEnd_toEndOf="@+id/PlayerWagers"
+        app:layout_constraintTop_toTopOf="@+id/Player1Score" />
 
     <EditText
-        android:id="@+id/editTextNumber8"
+        android:id="@+id/Player1Cards"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="number"
         app:layout_constraintEnd_toStartOf="@+id/space2"
         app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/Player1" />
 
     <Space
         android:id="@+id/space"
@@ -121,88 +127,95 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextNumber15"
+        android:id="@+id/Player2Cards"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/space2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/Player2" />
 
     <EditText
-        android:id="@+id/editTextNumber16"
+        android:id="@+id/Player1Points"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="number"
         app:layout_constraintEnd_toStartOf="@+id/space2"
         app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber8" />
+        app:layout_constraintTop_toBottomOf="@+id/Player1Cards" />
 
     <EditText
-        android:id="@+id/editTextNumber17"
+        android:id="@+id/Player2Points"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="@+id/nav_host_fragment_content_new_game"
         app:layout_constraintStart_toEndOf="@+id/space2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber15" />
+        app:layout_constraintTop_toBottomOf="@+id/Player2Cards" />
 
     <EditText
-        android:id="@+id/editTextNumber18"
+        android:id="@+id/Player1Wagers"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="number"
         app:layout_constraintEnd_toStartOf="@+id/space2"
         app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber16" />
+        app:layout_constraintTop_toBottomOf="@+id/Player1Points" />
 
     <EditText
-        android:id="@+id/editTextNumber19"
+        android:id="@+id/Player2Wagers"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/space2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber17" />
+        app:layout_constraintTop_toBottomOf="@+id/Player2Points" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/Player1Score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:gravity="center"
         android:text="TextView"
         app:layout_constraintEnd_toStartOf="@+id/space2"
         app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber18" />
+        app:layout_constraintTop_toBottomOf="@+id/Player1Wagers" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/Player2Score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:gravity="center"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/space2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber19" />
+        app:layout_constraintTop_toBottomOf="@+id/Player2Wagers" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
