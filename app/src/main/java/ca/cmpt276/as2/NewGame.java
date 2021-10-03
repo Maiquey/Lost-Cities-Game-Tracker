@@ -41,6 +41,8 @@ public class NewGame extends AppCompatActivity {
     private TextView Winner;
     private GameManager gameManager;
 
+    private int ActivityState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,14 +64,13 @@ public class NewGame extends AppCompatActivity {
         Player2Points = (EditText) findViewById(R.id.Player2Points);
         Player2Wagers = (EditText) findViewById(R.id.Player2Wagers);
 
-        Player1 = new PlayerScore(0,0,0);
-        Player2 = new PlayerScore(0,0,0);
+
 
         gameManager = GameManager.getInstance();
 
         Intent intent = getIntent();
-        int ActivityState = intent.getIntExtra("state", 1);
-        Toast.makeText(this,"" + ActivityState, Toast.LENGTH_SHORT).show();
+        ActivityState = intent.getIntExtra("state", 1);
+
 
         //determine if New game or Edit game
         switch(ActivityState){
@@ -82,7 +83,9 @@ public class NewGame extends AppCompatActivity {
             case 2:
                 setTitle(getString(R.string.edit_title));
                 //code for editting existing game
-                editGame(gameManager, intent);
+                int gameIndex = intent.getIntExtra("index", 0);
+                Toast.makeText(this,"" + gameIndex, Toast.LENGTH_SHORT).show();
+                editGame(gameIndex);
 
                 break;
         }
@@ -91,6 +94,9 @@ public class NewGame extends AppCompatActivity {
 
     private void newGame() {
         game = new Game();
+
+        Player1 = new PlayerScore(0,0,0);
+        Player2 = new PlayerScore(0,0,0);
 
         TextView dateTime = (TextView) findViewById(R.id.DateTime);
         dateTime.setText("" + game.getCreation_time());
@@ -160,12 +166,12 @@ public class NewGame extends AppCompatActivity {
             player.setNum_of_wager_cards(Integer.parseInt(WagersStr));
 
             PlayerScore.setText("" + player.getScore());
-            Toast.makeText(NewGame.this, "SCORE!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(NewGame.this, "SCORE!", Toast.LENGTH_SHORT).show();
             changeWinnerMessage();
         }else{
             PlayerScore.setText("-");
             Winner.setText("");
-            Toast.makeText(NewGame.this, "NOPE!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(NewGame.this, "NOPE!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -183,9 +189,35 @@ public class NewGame extends AppCompatActivity {
         }
     }
 
-    private void editGame(GameManager gameManager, Intent intent) {
-        int index = intent.getIntExtra("index", 0);
-        Game game = gameManager.retrieveGame(index);
+    private void editGame(int gameIndex) {
+
+        game = gameManager.retrieveGame(gameIndex);
+        Player1 = game.getPlayer(0);
+        Player2 = game.getPlayer(1);
+
+        TextView dateTime = (TextView) findViewById(R.id.DateTime);
+        dateTime.setText("" + game.getCreation_time());
+
+        populateView();
+
+        watchText1(Player1Cards);
+        watchText1(Player1Points);
+        watchText1(Player1Wagers);
+        watchText2(Player2Cards);
+        watchText2(Player2Points);
+        watchText2(Player2Wagers);
+    }
+
+    private void populateView() {
+        Player1Cards.setText("" + Player1.getNum_of_cards());
+        Player1Points.setText("" + Player1.getSum_of_points());
+        Player1Wagers.setText("" + Player1.getNum_of_wager_cards());
+        Player1Score.setText("" + Player1.getScore());
+        Player2Cards.setText("" + Player2.getNum_of_cards());
+        Player2Points.setText("" + Player2.getSum_of_points());
+        Player2Wagers.setText("" + Player2.getNum_of_wager_cards());
+        Player2Score.setText("" + Player2.getScore());
+        changeWinnerMessage();
     }
 
     public static Intent makeIntent(Context context) {
@@ -220,12 +252,19 @@ public class NewGame extends AppCompatActivity {
                     Toast.makeText(this, "Point and Wager fields must be 0 if number of cards is 0", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    Toast.makeText(this, "Now saving!", Toast.LENGTH_SHORT).show();
-                    game.addScore(Player1);
-                    game.addScore(Player2);
-                    game.findWinners();
-                    gameManager.addGame(game);
+                    if (ActivityState == 1){
+                        Toast.makeText(this, "Now saving!", Toast.LENGTH_SHORT).show();
+                        game.addScore(Player1);
+                        game.addScore(Player2);
+                        game.findWinners();
+                        gameManager.addGame(game);
+                    }
+                    else{
+                        Toast.makeText(this, "Now Re-saving!", Toast.LENGTH_SHORT).show();
+                        game.findWinners();
+                    }
                     finish();
+
                 }
                 break;
 

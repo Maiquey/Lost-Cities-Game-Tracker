@@ -28,7 +28,7 @@ public class Game {
     public void findWinners() {
 
         if ( players.get(0).getScore() == players.get(1).getScore()){
-            return;
+            winner = 0;
         }
         else if ( players.get(0).getScore() > players.get(1).getScore()){
             winner = 1;
