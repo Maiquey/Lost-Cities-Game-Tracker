@@ -65,4 +65,8 @@ public class GameManager {
     public boolean isEmpty(){
         return games.isEmpty();
     }
+
+    public ArrayList<Game> getGames() {
+        return games;
+    }
 }

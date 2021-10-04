@@ -22,8 +22,8 @@
     <string name="number_of_wagers">Number of Wagers</string>
     <string name="scores">Scores</string>
     <string name="tie_game">Tie Game</string>
-    <string name="winner_1">Winner is Player 1</string>
-    <string name="winner_2">Winner is Player 2</string>
+    <string name="winner_1">Player 1 Won</string>
+    <string name="winner_2">Player 2 Won</string>
     <string name="save">Save</string>
     <string name="delete_game">Delete Game</string>
     <string name="cancel">cancel</string>
