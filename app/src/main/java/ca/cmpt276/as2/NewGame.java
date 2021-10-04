@@ -12,9 +12,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import ca.cmpt276.as2.databinding.ActivityNewGameBinding;
 import ca.cmpt276.as2.model.Game;
@@ -22,6 +26,11 @@ import ca.cmpt276.as2.model.GameManager;
 import ca.cmpt276.as2.model.PlayerScore;
 
 public class NewGame extends AppCompatActivity {
+
+    private static final int NEW_GAME_STATE = 1;
+    private static final int EDIT_GAME_STATE = 2;
+    private static final String EXTRA_STATE = "ca.cmpt276.as2.NewGame - the state";
+    private static final String EXTRA_INDEX = "ca.cmpt276.as2.NewGame - the index";
 
     private ActivityNewGameBinding binding;
     private Game game;
@@ -39,7 +48,24 @@ public class NewGame extends AppCompatActivity {
     private TextView Winner;
     private GameManager gameManager;
 
-    private int ActivityState;
+    private int activityState;
+    private int gameIndex;
+
+    private boolean changesMade;
+
+    //static method to encapsulate getting intent for launch
+    public static Intent makeIntent(Context context, int state, int index) {
+        Intent intent = new Intent(context, NewGame.class);
+        intent.putExtra(EXTRA_STATE, state);
+        intent.putExtra(EXTRA_INDEX, index);
+        return intent;
+    }
+
+    private void extractDataFromIntent(){
+        Intent intent = getIntent();
+        activityState = intent.getIntExtra(EXTRA_STATE, 1);
+        gameIndex = intent.getIntExtra(EXTRA_INDEX, 0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +73,9 @@ public class NewGame extends AppCompatActivity {
         binding = ActivityNewGameBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+
+        changesMade = false;
+        extractDataFromIntent();
 
         //Enable "up" on toolbar
         ActionBar ab = getSupportActionBar();
@@ -66,21 +95,15 @@ public class NewGame extends AppCompatActivity {
         //singleton instance
         gameManager = GameManager.getInstance();
 
-        Intent intent = getIntent();
-        ActivityState = intent.getIntExtra("state", 1);
-
-
         //determine if New game or Edit game
-        switch(ActivityState){
-            case 1:
+        switch(activityState){
+            case NEW_GAME_STATE:
                 setTitle(getString(R.string.new_title));
                 newGame();
                 break;
 
-            case 2:
+            case EDIT_GAME_STATE:
                 setTitle(getString(R.string.edit_title));
-                int gameIndex = intent.getIntExtra("index", 0);
-                Toast.makeText(this,"" + gameIndex, Toast.LENGTH_SHORT).show();
                 editGame(gameIndex);
 
                 break;
@@ -119,6 +142,7 @@ public class NewGame extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                changesMade = true;
                 updateScore(Player1Score, Player1, Player1Cards, Player1Points, Player1Wagers);
             }
 
@@ -130,6 +154,7 @@ public class NewGame extends AppCompatActivity {
     }
 
     //make changes based on changes to fields related to player 2
+    //duplicate code due to issues encountered with changing both scores at once
     private void watchText2(EditText TextBox) {
         TextBox.addTextChangedListener(new TextWatcher() {
 
@@ -140,6 +165,7 @@ public class NewGame extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                changesMade = true;
                 updateScore(Player2Score, Player2, Player2Cards, Player2Points, Player2Wagers);
             }
 
@@ -206,6 +232,19 @@ public class NewGame extends AppCompatActivity {
         watchText2(Player2Cards);
         watchText2(Player2Points);
         watchText2(Player2Wagers);
+
+        Button deleteButton = (Button) findViewById(R.id.delete_button);
+        deleteButton.setVisibility(View.VISIBLE);
+        deleteButton.setOnClickListener(new Button.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                confirmDelete();
+                //ask if user is sure
+                //if so, delete the game
+                //deleteButton.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     //populates view of activity with data of game to edit
@@ -223,10 +262,6 @@ public class NewGame extends AppCompatActivity {
         changeWinnerMessage();
     }
 
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, NewGame.class);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_game, menu);
@@ -242,14 +277,26 @@ public class NewGame extends AppCompatActivity {
                 break;
 
             case android.R.id.home:
-                finish();
+                if (changesMade){
+                    confirmExit();
+                }
+                else{
+                    finish();
+                }
                 break;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
+    }
+
+    //extra functionality for pressing back button
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        confirmExit();
     }
 
     //saving a game (new and edited)
@@ -268,7 +315,7 @@ public class NewGame extends AppCompatActivity {
             game.addScore(Player2);
             game.findWinners();
             Toast.makeText(this, "Saving!", Toast.LENGTH_SHORT).show();
-            if (ActivityState == 1){
+            if (activityState == NEW_GAME_STATE){
                 gameManager.addGame(game);
             }
             else{
@@ -296,5 +343,64 @@ public class NewGame extends AppCompatActivity {
     private void finalScoreCheck(){
         updateScore(Player1Score, Player1, Player1Cards, Player1Points, Player1Wagers);
         updateScore(Player2Score, Player2, Player2Cards, Player2Points, Player2Wagers);
+    }
+
+    private void confirmExit(){
+        TextView message = (TextView) findViewById(R.id.discard_prompt);
+        message.setVisibility(View.VISIBLE);
+
+        Button exitButtonYes = (Button) findViewById(R.id.confirm_exit_button);
+        exitButtonYes.setVisibility(View.VISIBLE);
+        exitButtonYes.setOnClickListener(new Button.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        Button exitButtonNo = (Button) findViewById(R.id.cancel_exit_button);
+        exitButtonNo.setVisibility(View.VISIBLE);
+        exitButtonNo.setOnClickListener(new Button.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                message.setVisibility(View.INVISIBLE);
+                exitButtonYes.setVisibility(View.INVISIBLE);
+                exitButtonNo.setVisibility(View.INVISIBLE);
+
+            }
+        });
+    }
+
+    //similar but necessary method
+    private void confirmDelete(){
+        TextView message = (TextView) findViewById(R.id.delete_prompt);
+        message.setVisibility(View.VISIBLE);
+
+        Button deleteButtonYes = (Button) findViewById(R.id.confirm_delete_button);
+        deleteButtonYes.setVisibility(View.VISIBLE);
+        deleteButtonYes.setOnClickListener(new Button.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                gameManager.removeGame(gameIndex);
+                finish();
+            }
+        });
+
+        Button deleteButtonNo = (Button) findViewById(R.id.cancel_delete_button);
+        deleteButtonNo.setVisibility(View.VISIBLE);
+        deleteButtonNo.setOnClickListener(new Button.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+
+                message.setVisibility(View.INVISIBLE);
+                deleteButtonYes.setVisibility(View.INVISIBLE);
+                deleteButtonNo.setVisibility(View.INVISIBLE);
+
+            }
+        });
     }
 }

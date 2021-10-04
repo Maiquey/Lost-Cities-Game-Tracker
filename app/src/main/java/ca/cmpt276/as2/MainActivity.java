@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private GameManager gameManager;
 
+    private static final int NEW_GAME_STATE = 1;
+    private static final int EDIT_GAME_STATE = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = NewGame.makeIntent(MainActivity.this);
-                intent.putExtra("state", 1);
+                Intent intent = NewGame.makeIntent(MainActivity.this, NEW_GAME_STATE, 0);
                 startActivity(intent);
 
             }
@@ -83,9 +85,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 TextView textView = (TextView) viewClicked;
-                Intent intent = NewGame.makeIntent(MainActivity.this);
-                intent.putExtra("state", 2);
-                intent.putExtra("index", position);
+                Intent intent = NewGame.makeIntent(MainActivity.this, EDIT_GAME_STATE, position);
                 startActivity(intent);
             }
         });

@@ -19,11 +19,21 @@
 
     <ListView
         android:id="@+id/GameList"
-        android:layout_width="377dp"
-        android:layout_height="695dp"
+        android:layout_width="378dp"
+        android:layout_height="616dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="@+id/nav_host_fragment_content_main"
         app:layout_constraintTop_toTopOf="@+id/nav_host_fragment_content_main" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="184dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Optional Features:\n1. Edit and Delete Game\n2. Complex List View\n3. Confirm on Cancel Edit\n5. Empty State"
+        app:layout_constraintBottom_toBottomOf="@+id/nav_host_fragment_content_main"
+        app:layout_constraintStart_toStartOf="@+id/nav_host_fragment_content_main" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,4 +25,10 @@
     <string name="winner_1">Winner is Player 1</string>
     <string name="winner_2">Winner is Player 2</string>
     <string name="save">Save</string>
+    <string name="delete_game">Delete Game</string>
+    <string name="cancel">cancel</string>
+    <string name="discard_changes">Discard Changes?</string>
+    <string name="delete">delete</string>
+    <string name="confirm">confirm</string>
+    <string name="delete_prompt">Delete?</string>
 </resources>

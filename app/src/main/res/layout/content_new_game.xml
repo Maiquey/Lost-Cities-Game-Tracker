@@ -222,10 +222,101 @@
         android:id="@+id/winner"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/nav_host_fragment_content_new_game"
         app:layout_constraintTop_toBottomOf="@+id/Player1Score" />
+
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_game"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/Player1"
+        app:layout_constraintEnd_toEndOf="@+id/PlayerCards"
+        app:layout_constraintStart_toStartOf="@+id/PlayerCards"
+        app:layout_constraintTop_toTopOf="@+id/Player1"
+        app:layout_constraintVertical_bias="0.77" />
+
+    <Button
+        android:id="@+id/cancel_exit_button"
+        android:layout_width="93dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/cancel"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/Player1Wagers"
+        app:layout_constraintStart_toStartOf="@+id/Player1Wagers"
+        app:layout_constraintTop_toBottomOf="@+id/Player1Score" />
+
+    <Button
+        android:id="@+id/confirm_exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/confirm"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/Player2Wagers"
+        app:layout_constraintStart_toStartOf="@+id/Player2Wagers"
+        app:layout_constraintTop_toBottomOf="@+id/Player1Score" />
+
+    <TextView
+        android:id="@+id/discard_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="@string/discard_changes"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/cancel_exit_button"
+        app:layout_constraintEnd_toStartOf="@+id/cancel_exit_button"
+        app:layout_constraintTop_toTopOf="@+id/cancel_exit_button" />
+
+    <Button
+        android:id="@+id/cancel_delete_button"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:text="@string/cancel"
+        android:textSize="8sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/PlayerCards"
+        app:layout_constraintEnd_toStartOf="@+id/space3"
+        app:layout_constraintStart_toStartOf="@+id/delete_button"
+        app:layout_constraintTop_toBottomOf="@+id/delete_button"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/confirm_delete_button"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:text="@string/delete"
+        android:textSize="8sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/PlayerCards"
+        app:layout_constraintEnd_toEndOf="@+id/delete_button"
+        app:layout_constraintStart_toEndOf="@+id/space3"
+        app:layout_constraintTop_toBottomOf="@+id/delete_button"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Space
+        android:id="@+id/space3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/delete_button"
+        app:layout_constraintStart_toStartOf="@+id/delete_button"
+        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment_content_new_game" />
+
+    <TextView
+        android:id="@+id/delete_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="45dp"
+        android:text="@string/delete_prompt"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/delete_button"
+        app:layout_constraintEnd_toEndOf="@+id/delete_button"
+        app:layout_constraintStart_toStartOf="@+id/delete_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
