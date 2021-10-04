@@ -1,7 +1,5 @@
 package ca.cmpt276.as2;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,8 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
-
-import androidx.navigation.ui.AppBarConfiguration;
 
 import ca.cmpt276.as2.databinding.ActivityMainBinding;
 import ca.cmpt276.as2.model.Game;
@@ -23,9 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -98,18 +92,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-//        //create list of items
-//        String[] myItems = gameManager.getStringArr();
-//
-//        //build adapter
-//        ArrayAdapter<String> adapter= new ArrayAdapter<String>(
-//                this,            //context for activity
-//                R.layout.list_games,    //layout to use (create)
-//                myItems);               //Items to be displayed
-//
-//        //configure listview
-//        ListView list = (ListView) findViewById(R.id.GameList);
-//        list.setAdapter(adapter);
         games = gameManager.getGames();
 
         ArrayAdapter<Game> adapter = new MyListAdapter();
@@ -170,12 +152,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             TextView date = (TextView) itemView.findViewById(R.id.item_DateTime);
-            date.setText("" + game.getCreation_timeStr());
+            date.setText("Date and time: " + game.getCreation_timeStr());
 
             TextView score = (TextView) itemView.findViewById(R.id.item_score);
-            score.setText("" + game.getPlayer(0).getScore() + " vs " + game.getPlayer(1).getScore());
-
-
+            score.setText("Scores: " + game.getPlayer(0).getScore() + " vs " + game.getPlayer(1).getScore());
 
             return itemView;
         }

@@ -18,8 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import ca.cmpt276.as2.databinding.ActivityNewGameBinding;
 import ca.cmpt276.as2.model.Game;
 import ca.cmpt276.as2.model.GameManager;
