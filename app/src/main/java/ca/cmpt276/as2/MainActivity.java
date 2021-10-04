@@ -1,5 +1,6 @@
 package ca.cmpt276.as2;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import ca.cmpt276.as2.model.GameManager;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -47,7 +49,28 @@ public class MainActivity extends AppCompatActivity {
         UpdateUI();
     }
 
+    @SuppressLint("ResourceType")
     private void UpdateUI() {
+        TextView element1 = (TextView) findViewById(R.id.empty_element_1);
+        TextView element2 = (TextView) findViewById(R.id.empty_element_2);
+        ImageView element3 = (ImageView) findViewById(R.id.empty_element_3);
+        ImageView element4 = (ImageView) findViewById(R.id.empty_element_4);
+        ImageView element5 = (ImageView) findViewById(R.id.empty_element_5);
+
+        if(gameManager.isEmpty()){
+            element1.setVisibility(View.VISIBLE);
+            element2.setVisibility(View.VISIBLE);
+            element3.setVisibility(View.VISIBLE);
+            element4.setVisibility(View.VISIBLE);
+            element5.setVisibility(View.VISIBLE);
+        }
+        else{
+            element1.setVisibility(View.INVISIBLE);
+            element2.setVisibility(View.INVISIBLE);
+            element3.setVisibility(View.INVISIBLE);
+            element4.setVisibility(View.INVISIBLE);
+            element5.setVisibility(View.INVISIBLE);
+        }
         populateListView();
     }
 
